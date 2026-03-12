@@ -28,7 +28,7 @@ const Contact = () => {
                             viewport={{ once: true }}
                             className="mb-20"
                         >
-                            <h2 className="text-sm font-mono tracking-[0.5em] text-neon-green mb-8 uppercase">Let's Connect</h2>
+                            <h2 className="text-sm font-mono tracking-[0.5em] text-neon-green mb-8 uppercase">Let&apos;s Connect</h2>
                             <h3 className="text-6xl md:text-8xl font-black text-white mb-10 leading-[0.85] tracking-tighter uppercase">
                                 INITIATE <br />
                                 <span className="text-neon-green">TRANSMISSION</span>

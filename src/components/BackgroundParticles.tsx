@@ -5,19 +5,16 @@ import { Points, PointMaterial } from "@react-three/drei";
 import { useState, useRef, useMemo } from "react";
 import * as THREE from "three";
 
+// Generate particles position outside component to maintain purity
+const positions = new Float32Array(2000 * 3);
+for (let i = 0; i < 2000; i++) {
+    positions[i * 3] = (Math.random() - 0.5) * 10;
+    positions[i * 3 + 1] = (Math.random() - 0.5) * 10;
+    positions[i * 3 + 2] = (Math.random() - 0.5) * 10;
+}
+
 function Particles() {
     const ref = useRef<THREE.Points>(null!);
-
-    // Generate particles position using useMemo for performance
-    const positions = useMemo(() => {
-        const pos = new Float32Array(2000 * 3);
-        for (let i = 0; i < 2000; i++) {
-            pos[i * 3] = (Math.random() - 0.5) * 10;
-            pos[i * 3 + 1] = (Math.random() - 0.5) * 10;
-            pos[i * 3 + 2] = (Math.random() - 0.5) * 10;
-        }
-        return pos;
-    }, []);
 
     useFrame((state, delta) => {
         ref.current.rotation.x -= delta / 10;

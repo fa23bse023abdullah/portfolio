@@ -7,14 +7,12 @@ import Image from "next/image";
 import { Github, Linkedin, Facebook, MessageCircle, ArrowRight } from "lucide-react";
 
 const Hero = () => {
-    const [mounted, setMounted] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
     const { scrollY } = useScroll();
     const yText = useTransform(scrollY, [0, 500], [0, 200]);
     const opacityText = useTransform(scrollY, [0, 300], [1, 0]);
 
     useEffect(() => {
-        setMounted(true);
         const handleMouseMove = (e: MouseEvent) => {
             const { clientX, clientY } = e;
             const xPos = (clientX / window.innerWidth - 0.5) * 40;
@@ -57,8 +55,6 @@ const Hero = () => {
         { icon: Facebook, href: "#" },
         { icon: MessageCircle, href: "#" },
     ];
-
-    if (!mounted) return null;
 
     return (
         <section ref={containerRef} id="hero" className="relative min-h-[110vh] flex items-center justify-center pt-20 pb-20 overflow-hidden bg-black font-sans">
