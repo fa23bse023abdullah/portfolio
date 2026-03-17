@@ -35,7 +35,13 @@ const About = () => {
                         </h3>
                         <div className="space-y-6 text-lg md:text-xl text-white/40 font-light leading-relaxed max-w-xl mb-16">
                             <p>
-                                <strong className="text-white font-black">Muhammad Abdullah Tauqeer</strong> is a Full Stack Engineer dedicated to crafting high-performance digital ecosystems.
+                                <motion.strong 
+                                    whileHover={{ skewX: [0, -2, 2, 0], color: ["#fff", "#a3ff12", "#fff"] }}
+                                    transition={{ duration: 0.2, repeat: Infinity, repeatType: "mirror" }}
+                                    className="text-white font-black cursor-default inline-block"
+                                >
+                                    Muhammad Abdullah Tauqeer
+                                </motion.strong> is a Full Stack Engineer dedicated to crafting high-performance digital ecosystems.
                             </p>
                             <p>
                                 Specializing in scalable backend architectures and ultra-premium frontend experiences, blurring the line between code and art.

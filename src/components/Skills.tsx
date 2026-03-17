@@ -39,6 +39,10 @@ const categories = [
 const Skills = () => {
     return (
         <section id="skills" className="py-40 relative bg-black overflow-hidden font-sans">
+            {/* Architectural Grid Background */}
+            <div className="absolute inset-0 opacity-[0.1] pointer-events-none" 
+                 style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, #a3ff12 1px, transparent 0)', backgroundSize: '40px 40px' }} />
+            
             {/* Dynamic background lighting */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-neon-green/5 blur-[150px] rounded-full pointer-events-none" />
 
@@ -104,12 +108,13 @@ const Skills = () => {
 
                             <div className="flex flex-wrap gap-3">
                                 {category.skills.map((skill, sIdx) => (
-                                    <span
+                                    <motion.span
                                         key={sIdx}
-                                        className="px-4 py-2 glass-card rounded-xl border-white/5 text-[10px] font-bold text-white/40 uppercase tracking-widest hover:border-neon-green/20 hover:text-neon-green transition-all"
+                                        whileHover={{ scale: 1.1, color: "#a3ff12", borderColor: "rgba(163,255,18,0.4)" }}
+                                        className="px-4 py-2 glass-card rounded-xl border-white/5 text-[10px] font-bold text-white/40 uppercase tracking-widest transition-all cursor-default"
                                     >
                                         {skill}
-                                    </span>
+                                    </motion.span>
                                 ))}
                             </div>
                         </motion.div>
