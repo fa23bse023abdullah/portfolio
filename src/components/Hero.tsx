@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useScroll, useTransform, Variants } from "framer-motion";
+import { motion, useScroll, useTransform, Variants, useMotionValue, useSpring } from "framer-motion";
 import { useEffect, useState, useRef } from "react";
 import gsap from "gsap";
 import Image from "next/image";
@@ -12,21 +12,35 @@ const Hero = () => {
     const yText = useTransform(scrollY, [0, 500], [0, 200]);
     const opacityText = useTransform(scrollY, [0, 300], [1, 0]);
 
-    useEffect(() => {
-        const handleMouseMove = (e: MouseEvent) => {
-            const { clientX, clientY } = e;
-            const xPos = (clientX / window.innerWidth - 0.5) * 40;
-            const yPos = (clientY / window.innerHeight - 0.5) * 40;
+    // 3D Tilt Logic
+    const mouseX = useMotionValue(0);
+    const mouseY = useMotionValue(0);
+    const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [10, -10]), { stiffness: 150, damping: 20 });
+    const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-10, 10]), { stiffness: 150, damping: 20 });
 
-            gsap.to(".hero-parallax", {
-                x: xPos,
-                y: yPos,
-                duration: 2,
-                ease: "power2.out"
-            });
-        };
-        window.addEventListener("mousemove", handleMouseMove);
-        return () => window.removeEventListener("mousemove", handleMouseMove);
+    const handleMouseMove = (e: React.MouseEvent | MouseEvent) => {
+        const { clientX, clientY } = e;
+        const xPos = (clientX / window.innerWidth - 0.5) * 40;
+        const yPos = (clientY / window.innerHeight - 0.5) * 40;
+
+        gsap.to(".hero-parallax", {
+            x: xPos,
+            y: yPos,
+            duration: 2,
+            ease: "power2.out"
+        });
+
+        // Update 3D Tilt
+        if (containerRef.current) {
+            const rect = containerRef.current.getBoundingClientRect();
+            mouseX.set((clientX - rect.left) / rect.width - 0.5);
+            mouseY.set((clientY - rect.top) / rect.height - 0.5);
+        }
+    };
+
+    useEffect(() => {
+        window.addEventListener("mousemove", (e) => handleMouseMove(e));
+        return () => window.removeEventListener("mousemove", (e) => handleMouseMove(e));
     }, []);
 
     const name = "ABDULLAH";
@@ -124,23 +138,34 @@ const Hero = () => {
                     </motion.div>
 
                     {/* Right Column: Portrait & Floating Elements */}
-                    <div className="order-1 lg:order-2 relative flex items-center justify-center">
+                    <div className="order-1 lg:order-2 relative flex items-center justify-center perspective-1000">
                         <motion.div
                             initial={{ opacity: 0, x: 100, rotate: 5 }}
                             animate={{ opacity: 1, x: 0, rotate: 0 }}
                             transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.5 }}
+                            style={{ rotateX, rotateY }}
                             className="relative"
                         >
+                            {/* Glowing Aura Background */}
+                            <div className="absolute -inset-10 bg-neon-green/20 blur-[80px] rounded-full animate-pulse opacity-0 group-hover:opacity-100 transition-opacity" />
+                            
                             {/* Main Frame */}
-                            <div className="relative w-[300px] h-[450px] md:w-[450px] md:h-[600px] rounded-[4rem] border border-white/10 p-4 group">
-                                <div className="absolute inset-0 bg-neutral-900 rounded-[3.8rem] overflow-hidden hover:grayscale-0 transition-all duration-700">
+                            <div className="relative w-[300px] h-[450px] md:w-[450px] md:h-[600px] rounded-[4rem] border border-white/10 p-4 group bg-black/40 backdrop-blur-sm overflow-hidden">
+                                
+                                {/* Scanning Line Effect */}
+                                <div className="absolute inset-x-0 h-[2px] bg-neon-green/50 z-20 top-0 animate-[scan_4s_linear_infinite] pointer-events-none" />
+                                
+                                <div className="absolute inset-0 bg-neutral-900 rounded-[3.8rem] overflow-hidden transition-all duration-700">
                                     <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black via-black/50 to-transparent z-10" />
-                                    {/* Real Generated Portrait */}
+                                    
+                                    {/* Scanline Texture Overlay */}
+                                    <div className="absolute inset-0 opacity-10 pointer-events-none z-20 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_2px,3px_100%]" />
+
                                     <Image
                                         src="/abdullah_portrait.jpg"
                                         alt="Muhammad Abdullah Tauqeer"
                                         fill
-                                        className="object-cover object-top grayscale hover:grayscale-0 transition-all duration-700"
+                                        className="object-cover object-top grayscale group-hover:grayscale-0 transition-all duration-700 scale-105 group-hover:scale-100"
                                         priority
                                     />
 
@@ -150,27 +175,40 @@ const Hero = () => {
                                         whileInView={{ opacity: 1, y: 0 }}
                                         className="absolute bottom-12 left-12 z-20"
                                     >
-                                        <p className="text-[10px] font-mono tracking-[0.4em] text-neon-green uppercase mb-2">SYSTEM_LOGS</p>
-                                        <p className="text-xl font-black text-white uppercase tracking-wider">MAT.V3_STABLE</p>
+                                        <div className="flex items-center gap-2 mb-2">
+                                            <div className="w-2 h-2 rounded-full bg-neon-green animate-ping" />
+                                            <p className="text-[10px] font-mono tracking-[0.4em] text-neon-green uppercase">ACTIVE_CORE</p>
+                                        </div>
+                                        <p className="text-xl font-black text-white uppercase tracking-wider">MAT.V3 // STABLE</p>
                                     </motion.div>
+                                    
+                                    {/* HUD Elements */}
+                                    <div className="absolute top-10 right-10 z-20 hidden md:block">
+                                        <div className="flex flex-col items-end gap-1 opacity-40">
+                                            <div className="w-16 h-1 bg-white/20" />
+                                            <div className="w-10 h-1 bg-neon-green" />
+                                            <p className="text-[8px] font-mono text-white mt-1 uppercase tracking-tighter">Lat: 33.6844</p>
+                                            <p className="text-[8px] font-mono text-white uppercase tracking-tighter">Long: 73.0479</p>
+                                        </div>
+                                    </div>
                                 </div>
 
-                                {/* Corners UI */}
-                                <div className="absolute -top-2 -left-2 w-24 h-24 border-t-2 border-l-2 border-neon-green rounded-tl-[4rem] pointer-events-none" />
-                                <div className="absolute -bottom-2 -right-2 w-24 h-24 border-b-2 border-r-2 border-neon-green rounded-br-[4rem] pointer-events-none" />
-
+                                {/* Corners UI - Enhanced */}
+                                <div className="absolute -top-1 -left-1 w-24 h-24 border-t-2 border-l-2 border-neon-green rounded-tl-[4rem] pointer-events-none z-30 opacity-60" />
+                                <div className="absolute -bottom-1 -right-1 w-24 h-24 border-b-2 border-r-2 border-neon-green rounded-br-[4rem] pointer-events-none z-30 opacity-60" />
+                                
                                 {/* Floating Tech Tags */}
                                 <motion.div
-                                    animate={{ y: [0, -20, 0] }}
+                                    animate={{ y: [0, -20, 0], x: [0, 5, 0] }}
                                     transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                                    className="absolute -right-8 top-20 px-6 py-3 glass-card rounded-2xl border-white/5 text-[10px] font-black text-neon-green uppercase tracking-widest z-30 hidden md:block"
+                                    className="absolute -right-8 top-20 px-6 py-3 glass-card rounded-2xl border-white/10 text-[10px] font-black text-neon-green shadow-lg shadow-neon-green/10 uppercase tracking-widest z-30 hidden md:block"
                                 >
                                     Next.js 16
                                 </motion.div>
                                 <motion.div
-                                    animate={{ y: [0, 20, 0] }}
+                                    animate={{ y: [0, 20, 0], x: [0, -5, 0] }}
                                     transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                                    className="absolute -left-12 bottom-40 px-6 py-3 glass-card rounded-2xl border-white/5 text-[10px] font-black text-white uppercase tracking-widest z-30 hidden md:block"
+                                    className="absolute -left-12 bottom-40 px-6 py-3 glass-card rounded-2xl border-white/10 text-[10px] font-black text-white shadow-lg shadow-white/5 uppercase tracking-widest z-30 hidden md:block"
                                 >
                                     AI / ML
                                 </motion.div>
