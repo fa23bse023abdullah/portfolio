@@ -1,7 +1,8 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Mail, Phone, MapPin, Send, Github, Linkedin, Facebook, MessageCircle } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Mail, Phone, MapPin, Send, Github, Linkedin, Facebook, MessageCircle, CheckCircle } from "lucide-react";
+import { useState } from "react";
 
 const contactMethods = [
     { icon: Mail, label: "Email", value: "abdullah@tauqeer.com", href: "mailto:abdullah@tauqeer.com" },
@@ -12,6 +13,20 @@ const contactMethods = [
 ];
 
 const Contact = () => {
+    const [isSending, setIsSending] = useState(false);
+    const [isSent, setIsSent] = useState(false);
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        setIsSending(true);
+        // Simulate transmission
+        setTimeout(() => {
+            setIsSending(false);
+            setIsSent(true);
+            setTimeout(() => setIsSent(false), 5000);
+        }, 2000);
+    };
+
     return (
         <section id="contact" className="py-40 relative bg-black overflow-hidden font-sans">
             <div className="absolute top-0 right-0 p-10 opacity-[0.02] pointer-events-none select-none">
@@ -67,39 +82,70 @@ const Contact = () => {
                         viewport={{ once: true }}
                         className="w-full lg:w-1/2"
                     >
-                        <div className="glass-card p-12 md:p-16 rounded-[4rem] border border-white/5 relative">
-                            <div className="absolute inset-0 bg-neon-green/5 blur-3xl rounded-full opacity-20 -z-10" />
+                        <div className="glass-card p-12 md:p-16 rounded-[4rem] border border-white/5 relative overflow-hidden">
+                            <AnimatePresence mode="wait">
+                                {isSent ? (
+                                    <motion.div
+                                        key="success"
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: -20 }}
+                                        className="flex flex-col items-center justify-center text-center py-20"
+                                    >
+                                        <div className="w-24 h-24 rounded-full bg-neon-green/10 flex items-center justify-center mb-8 border border-neon-green/20">
+                                            <CheckCircle className="w-10 h-10 text-neon-green" />
+                                        </div>
+                                        <h4 className="text-3xl font-black text-white uppercase mb-4 tracking-tighter">Transmission Successful</h4>
+                                        <p className="text-white/40 text-sm tracking-widest uppercase font-mono">Your signal has been received. Standing by for response.</p>
+                                    </motion.div>
+                                ) : (
+                                    <motion.form
+                                        key="form"
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        exit={{ opacity: 0 }}
+                                        onSubmit={handleSubmit}
+                                        className="space-y-12"
+                                    >
+                                        <div className="absolute inset-0 bg-neon-green/5 blur-3xl rounded-full opacity-20 -z-10" />
 
-                            <form className="space-y-12">
-                                <div className="space-y-4">
-                                    <label className="text-[10px] font-black text-neon-green uppercase tracking-[0.5em] ml-4">Identity</label>
-                                    <input
-                                        type="text"
-                                        placeholder="EX: JOHN DOE"
-                                        className="w-full p-8 glass-card border-transparent focus:border-neon-green/30 rounded-3xl text-white outline-none transition-all placeholder:text-white/5 text-sm uppercase font-black tracking-widest"
-                                    />
-                                </div>
-                                <div className="space-y-4">
-                                    <label className="text-[10px] font-black text-neon-green uppercase tracking-[0.5em] ml-4">Channel</label>
-                                    <input
-                                        type="email"
-                                        placeholder="EX: JOHN@WORK.COM"
-                                        className="w-full p-8 glass-card border-transparent focus:border-neon-green/30 rounded-3xl text-white outline-none transition-all placeholder:text-white/5 text-sm uppercase font-black tracking-widest"
-                                    />
-                                </div>
-                                <div className="space-y-4">
-                                    <label className="text-[10px] font-black text-neon-green uppercase tracking-[0.5em] ml-4">Requirement</label>
-                                    <textarea
-                                        rows={4}
-                                        placeholder="YOUR VISION..."
-                                        className="w-full p-8 glass-card border-transparent focus:border-neon-green/30 rounded-3xl text-white outline-none transition-all placeholder:text-white/5 text-sm uppercase font-black tracking-widest resize-none"
-                                    />
-                                </div>
-                                <button className="w-full py-8 bg-neon-green text-black font-black uppercase tracking-[0.5em] rounded-[2.5rem] hover:shadow-[0_0_40px_rgba(163,255,18,0.5)] transition-all flex items-center justify-center gap-4">
-                                    Transmit
-                                    <Send className="w-5 h-5" />
-                                </button>
-                            </form>
+                                        <div className="space-y-4">
+                                            <label className="text-[10px] font-black text-neon-green uppercase tracking-[0.5em] ml-4">Identity</label>
+                                            <input
+                                                type="text"
+                                                required
+                                                placeholder="EX: JOHN DOE"
+                                                className="w-full p-8 glass-card border-transparent focus:border-neon-green/30 rounded-3xl text-white outline-none transition-all placeholder:text-white/5 text-sm uppercase font-black tracking-widest focus:ring-1 focus:ring-neon-green/20"
+                                            />
+                                        </div>
+                                        <div className="space-y-4">
+                                            <label className="text-[10px] font-black text-neon-green uppercase tracking-[0.5em] ml-4">Channel</label>
+                                            <input
+                                                type="email"
+                                                required
+                                                placeholder="EX: JOHN@WORK.COM"
+                                                className="w-full p-8 glass-card border-transparent focus:border-neon-green/30 rounded-3xl text-white outline-none transition-all placeholder:text-white/5 text-sm uppercase font-black tracking-widest focus:ring-1 focus:ring-neon-green/20"
+                                            />
+                                        </div>
+                                        <div className="space-y-4">
+                                            <label className="text-[10px] font-black text-neon-green uppercase tracking-[0.5em] ml-4">Requirement</label>
+                                            <textarea
+                                                rows={4}
+                                                required
+                                                placeholder="YOUR VISION..."
+                                                className="w-full p-8 glass-card border-transparent focus:border-neon-green/30 rounded-3xl text-white outline-none transition-all placeholder:text-white/5 text-sm uppercase font-black tracking-widest resize-none focus:ring-1 focus:ring-neon-green/20"
+                                            />
+                                        </div>
+                                        <button
+                                            disabled={isSending}
+                                            className={`w-full py-8 ${isSending ? 'bg-white/10 text-white/20' : 'bg-neon-green text-black'} font-black uppercase tracking-[0.5em] rounded-[2.5rem] hover:shadow-[0_0_40px_rgba(163,255,18,0.5)] transition-all flex items-center justify-center gap-4 group`}
+                                        >
+                                            {isSending ? 'Transmitting...' : 'Transmit'}
+                                            {!isSending && <Send className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />}
+                                        </button>
+                                    </motion.form>
+                                )}
+                            </AnimatePresence>
                         </div>
                     </motion.div>
                 </div>
