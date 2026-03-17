@@ -1,6 +1,6 @@
 "use client";
 
-import { Github, Linkedin, Mail, Heart, ArrowUp } from "lucide-react";
+import { Github, Linkedin, Mail, Phone, Heart, ArrowUp } from "lucide-react";
 
 const Footer = () => {
     return (
@@ -23,8 +23,11 @@ const Footer = () => {
                         <a href="#" className="w-12 h-12 glass-card rounded-2xl flex items-center justify-center border-white/5 text-white/30 hover:text-neon-green hover:border-neon-green/30 transition-all group">
                             <Linkedin className="w-5 h-5 group-hover:scale-110 transition-transform" />
                         </a>
-                        <a href="#" className="w-12 h-12 glass-card rounded-2xl flex items-center justify-center border-white/5 text-white/30 hover:text-neon-green hover:border-neon-green/30 transition-all group">
+                        <a href="mailto:abdullah@tauqeer.com" className="w-12 h-12 glass-card rounded-2xl flex items-center justify-center border-white/5 text-white/30 hover:text-neon-green hover:border-neon-green/30 transition-all group">
                             <Mail className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                        </a>
+                        <a href="tel:+923001234567" className="w-12 h-12 glass-card rounded-2xl flex items-center justify-center border-white/5 text-white/30 hover:text-neon-green hover:border-neon-green/30 transition-all group">
+                            <Phone className="w-5 h-5 group-hover:scale-110 transition-transform" />
                         </a>
                     </div>
 

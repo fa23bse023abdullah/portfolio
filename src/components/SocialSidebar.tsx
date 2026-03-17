@@ -1,14 +1,14 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Github, Linkedin, Facebook, MessageCircle } from "lucide-react";
+import { Github, Linkedin, Facebook, MessageCircle, Phone } from "lucide-react";
 
 export default function SocialSidebar() {
     const socials = [
-        { icon: <Github className="w-5 h-5" />, href: "https://github.com", label: "GitHub" },
-        { icon: <Linkedin className="w-5 h-5" />, href: "https://linkedin.com", label: "LinkedIn" },
-        { icon: <Facebook className="w-5 h-5" />, href: "https://facebook.com", label: "Facebook" },
-        { icon: <MessageCircle className="w-5 h-5" />, href: "https://wa.me/yournumber", label: "WhatsApp" },
+        { icon: <Github className="w-5 h-5" />, href: "https://github.com/abdullahtauqeer", label: "GitHub" },
+        { icon: <Linkedin className="w-5 h-5" />, href: "https://linkedin.com/in/abdullahtauqeer", label: "LinkedIn" },
+        { icon: <Phone className="w-5 h-5" />, href: "tel:+923001234567", label: "Phone" },
+        { icon: <MessageCircle className="w-5 h-5" />, href: "https://wa.me/923000000000", label: "WhatsApp" },
     ];
 
     return (

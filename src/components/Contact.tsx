@@ -5,9 +5,10 @@ import { Mail, Phone, MapPin, Send, Github, Linkedin, Facebook, MessageCircle } 
 
 const contactMethods = [
     { icon: Mail, label: "Email", value: "abdullah@tauqeer.com", href: "mailto:abdullah@tauqeer.com" },
+    { icon: Phone, label: "Call", value: "+92 300 1234567", href: "tel:+923001234567" },
     { icon: MessageCircle, label: "WhatsApp", value: "+92 300 0000000", href: "https://wa.me/923000000000" },
-    { icon: Github, label: "GitHub", value: "github.com/abdullah", href: "https://github.com" },
-    { icon: Linkedin, label: "LinkedIn", value: "linkedin.com/in/abdullah", href: "https://linkedin.com" },
+    { icon: Github, label: "GitHub", value: "github.com/abdullah", href: "https://github.com/abdullahtauqeer" },
+    { icon: Linkedin, label: "LinkedIn", value: "linkedin.com/in/abdullah", href: "https://linkedin.com/in/abdullahtauqeer" },
 ];
 
 const Contact = () => {

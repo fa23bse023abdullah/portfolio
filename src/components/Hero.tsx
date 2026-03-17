@@ -137,7 +137,7 @@ const Hero = () => {
                                     <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black via-black/50 to-transparent z-10" />
                                     {/* Real Generated Portrait */}
                                     <Image
-                                        src="/hero_portrait.png"
+                                        src="/abdullah_portrait.jpg"
                                         alt="Muhammad Abdullah Tauqeer"
                                         fill
                                         className="object-cover object-top grayscale hover:grayscale-0 transition-all duration-700"
